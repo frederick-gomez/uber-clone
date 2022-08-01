@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, SafeAreaView, StyleSheet, Text, View } from 'react-native';
+import { Image, SafeAreaView, View } from 'react-native';
 import tw from 'twrnc';
 import NavOptions from '../components/NavOptions';
 
@@ -24,5 +24,3 @@ const HomeScreen = () => {
 };
 
 export default HomeScreen;
-
-const styles = StyleSheet.create({});

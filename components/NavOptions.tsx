@@ -1,43 +1,63 @@
-import { FlatList, Image, Pressable, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 import React from 'react';
+import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/RootStackParamList';
 
-const data = [
-	{
-		id: 1,
-		title: 'Viaje',
-		image: 'https://links.papareact.com/3pn',
-		screen: 'MapScreen',
-	},
-	{
-		id: 2,
-		title: 'Envios',
-		image: 'https://links.papareact.com/28w',
-		screen: 'EatsScreen',
-	},
-];
+type mapScreenType = NativeStackNavigationProp<RootStackParamList, 'MapScreen'>;
+type flashScreenType = NativeStackNavigationProp<RootStackParamList, 'FlashScreen'>;
 
 const NavOptions = () => {
+	const navigation = useNavigation<mapScreenType | flashScreenType>();
+
 	return (
-		<FlatList
-			horizontal
-			data={data}
-			renderItem={({ item }) => (
-				<Pressable>
-					<Image
-						style={{
-							width: 100,
-							height: 100,
-							resizeMode: 'contain',
-						}}
-						source={{
-							uri: item.image,
-						}}
-					/>
-					<Text>{item.title}</Text>
-				</Pressable>
-			)}
-		/>
+		<View style={styles.container}>
+			<Pressable
+				style={styles.item}
+				android_ripple={styles.ripple}
+				onPress={() => navigation.navigate('MapScreen')}
+			>
+				<Text style={styles.text}>Viajes</Text>
+				<Image style={styles.image} source={require('../assets/viaje.webp')} />
+			</Pressable>
+
+			<Pressable
+				style={styles.item}
+				android_ripple={styles.ripple}
+				onPress={() => navigation.navigate('FlashScreen')}
+			>
+				<Text style={styles.text}>Envios</Text>
+				<Image style={styles.image} source={require('../assets/envios.png')} />
+			</Pressable>
+		</View>
 	);
 };
+
+const styles = StyleSheet.create({
+	container: {
+		justifyContent: 'space-between',
+		flexDirection: 'row',
+	},
+	item: {
+		width: 170,
+		justifyContent: 'space-between',
+		alignItems: 'flex-end',
+		flexDirection: 'row',
+		backgroundColor: '#ccc',
+		borderRadius: 15,
+	},
+	text: {
+		padding: 10,
+		fontWeight: '700',
+	},
+	image: {
+		width: 100,
+		height: 100,
+		resizeMode: 'contain',
+	},
+	ripple: {
+		color: '#c0c0c8',
+	},
+});
 
 export default NavOptions;
