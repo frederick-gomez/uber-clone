@@ -3,19 +3,26 @@ import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { RootStackParamList } from '../types/RootStackParamList';
+import { useAppSelector } from '../store/hooks';
 
 type mapScreenType = NativeStackNavigationProp<RootStackParamList, 'MapScreen'>;
 type flashScreenType = NativeStackNavigationProp<RootStackParamList, 'FlashScreen'>;
 
 const NavOptions = () => {
 	const navigation = useNavigation<mapScreenType | flashScreenType>();
+	const origin = useAppSelector((state) => state.nav.origin);
 
 	return (
 		<View style={styles.container}>
 			<Pressable
 				style={styles.item}
 				android_ripple={styles.ripple}
-				onPress={() => navigation.navigate('MapScreen')}
+				onPress={() => {
+					if (!origin) {
+						return;
+					}
+					navigation.navigate('MapScreen');
+				}}
 			>
 				<Text style={styles.text}>Viajes</Text>
 				<Image style={styles.image} source={require('../assets/viaje.webp')} />
@@ -43,7 +50,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 		flexDirection: 'row',
-		backgroundColor: '#ccc',
+		backgroundColor: '#ececec',
 		borderRadius: 15,
 	},
 	text: {
@@ -56,7 +63,7 @@ const styles = StyleSheet.create({
 		resizeMode: 'contain',
 	},
 	ripple: {
-		color: '#c0c0c8',
+		color: '#ccc',
 	},
 });
 
