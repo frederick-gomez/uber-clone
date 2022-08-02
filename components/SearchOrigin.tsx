@@ -4,7 +4,7 @@ import { GOOGLE_MAPS_KEY } from '@env';
 import { useAppDispatch } from '../store/hooks';
 import { setOrigin, setDestination } from '../store/reducer/navReducer';
 
-const SearchInput = () => {
+const SearchOrigin = () => {
 	const dispatch = useAppDispatch();
 
 	return (
@@ -50,4 +50,4 @@ const SearchInput = () => {
 	);
 };
 
-export default SearchInput;
+export default SearchOrigin;

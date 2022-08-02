@@ -1,7 +1,7 @@
 import React from 'react';
 import { Image, SafeAreaView, View, StyleSheet } from 'react-native';
 import NavOptions from '../components/NavOptions';
-import SearchInput from '../components/SearchInput';
+import SearchInput from '../components/SearchOrigin';
 import { useAppSelector } from '../store/hooks';
 
 const HomeScreen = () => {

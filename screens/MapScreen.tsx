@@ -4,6 +4,7 @@ import Map from '../components/Map';
 import NavigateCard from '../components/NavigateCard';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { CardStackParamList } from '../types/RootStackParamList';
+import RideOptions from '../components/RideOptions';
 
 const MapScreen = () => {
 	const Stack = createNativeStackNavigator<CardStackParamList>();
@@ -15,8 +16,10 @@ const MapScreen = () => {
 			</View>
 
 			<View style={styles.inputContainer}>
-				<Stack.Navigator initialRouteName='NavigateScreen' screenOptions={{ headerShown: false }}>
-					<Stack.Screen name='NavigateScreen' component={NavigateCard} />
+				<Stack.Navigator initialRouteName='NavigateCard' screenOptions={{ headerShown: false }}>
+					<Stack.Screen name='NavigateCard' component={NavigateCard} />
+
+					<Stack.Screen name='RideOptions' component={RideOptions} />
 				</Stack.Navigator>
 			</View>
 		</View>
@@ -35,6 +38,5 @@ const styles = StyleSheet.create({
 	},
 	inputContainer: {
 		flex: 1,
-		marginHorizontal: 15,
 	},
 });

@@ -5,5 +5,6 @@ export type RootStackParamList = {
 };
 
 export type CardStackParamList = {
-	NavigateScreen: undefined;
+	NavigateCard: undefined;
+	RideOptions: undefined;
 };
