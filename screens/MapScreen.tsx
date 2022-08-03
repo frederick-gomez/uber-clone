@@ -1,5 +1,4 @@
 import { StyleSheet, View } from 'react-native';
-import React from 'react';
 import Map from '../components/Map';
 import NavigateCard from '../components/NavigateCard';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';

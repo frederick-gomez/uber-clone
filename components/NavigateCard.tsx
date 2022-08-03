@@ -1,13 +1,15 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React from 'react';
 import SearchDestination from './SearchDestination';
+import NavFavorites from './NavFavorites';
 
 const NavigateCard = () => {
 	return (
 		<View style={styles.container}>
-			<Text style={styles.text}>Elige un viaje</Text>
-			<View>
-				<SearchDestination />
+			<Text style={styles.text}>Elige tu destino</Text>
+			<SearchDestination />
+			<View style={styles.favoritesContainer}>
+				<NavFavorites />
 			</View>
 		</View>
 	);
@@ -28,5 +30,8 @@ const styles = StyleSheet.create({
 		fontWeight: '600',
 		borderBottomColor: '#ececec',
 		borderBottomWidth: 1,
+	},
+	favoritesContainer: {
+		paddingHorizontal: 20,
 	},
 });

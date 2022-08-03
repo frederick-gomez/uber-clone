@@ -1,5 +1,8 @@
 import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useAppDispatch } from '../store/hooks';
+import { setDestination } from '../store/reducer/navReducer';
 
 const rideOptionsData = [
 	{
@@ -33,9 +36,18 @@ const rideOptionsData = [
 ];
 
 const RideOptions = () => {
+	const navigation = useNavigation();
+	const dispatch = useAppDispatch();
+
+	useEffect(() => {
+		navigation.addListener('beforeRemove', (e) => {
+			dispatch(setDestination(null));
+		});
+	}, []);
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>RideOptions</Text>
+			<Text style={styles.title}>Elige un viaje</Text>
 			<FlatList
 				data={rideOptionsData}
 				renderItem={(items) => (

@@ -8,6 +8,9 @@ import HomeScreen from './screens/HomeScreen';
 import MapScreen from './screens/MapScreen';
 import FlashScreen from './screens/FlashScreen';
 
+// TODO: reset origin coordinates on back press
+// !!BUG: map doesn't resize correctly
+
 export default function App() {
 	const Stack = createNativeStackNavigator<RootStackParamList>();
 
