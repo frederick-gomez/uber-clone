@@ -36,14 +36,14 @@ const rideOptionsData: rideOptionsType[] = [
 		title: 'Comfort',
 		price: '54.200',
 		seats: 4,
-		multiplier: 1.5,
+		multiplier: 1.4,
 	},
 	{
 		image: require('../assets/moto.jpg'),
 		title: 'Moto',
 		price: '20.600',
 		seats: 1,
-		multiplier: 0.7,
+		multiplier: 0.5,
 	},
 	{
 		image: require('../assets/envios.png'),
@@ -55,12 +55,19 @@ const rideOptionsData: rideOptionsType[] = [
 	},
 ];
 
-const CHARGE_RATE = 1;
+const CHARGE_RATE = 2.4;
 
 const RideOptions = () => {
 	const navigation = useNavigation();
 	const dispatch = useAppDispatch();
 	const travelTimeInformation = useAppSelector((state) => state.nav.travelTimeInformation);
+
+	//Calculate price according to travel distance and multipliers of each ride
+	const calculatePrice = (multiplier: number): string => {
+		const price = (travelTimeInformation?.duration.value * CHARGE_RATE * multiplier) / 100;
+		const roundedPrice = Math.round(price).toFixed(3);
+		return roundedPrice;
+	};
 
 	//Remove destination coordinates when exiting screen
 	useEffect(() => {
@@ -90,7 +97,16 @@ const RideOptions = () => {
 							<Image source={item.image} style={styles.image} />
 							<View style={styles.content}>
 								<View>
-									<Text style={styles.itemTitle}>{item.title}</Text>
+									<View style={{ flexDirection: 'row', alignItems: 'center' }}>
+										<Text style={styles.itemTitle}>{item.title}</Text>
+										{item.seats && (
+											<View style={styles.itemSeats}>
+												<Icon name='person' type='material' size={15} />
+												<Text>{item.seats}</Text>
+											</View>
+										)}
+									</View>
+
 									{item.subtitle ? (
 										<Text>{item.subtitle}</Text>
 									) : (
@@ -98,21 +114,7 @@ const RideOptions = () => {
 									)}
 								</View>
 
-								{item.seats && (
-									<View style={styles.itemSeats}>
-										<Icon name='person' type='material' size={15} />
-										<Text>{item.seats}</Text>
-									</View>
-								)}
-
-								<Text style={styles.itemPrice}>
-									{/* {new Intl.NumberFormat('en-US', {
-										style: 'currency',
-										currency: 'PYG',
-									}).format(
-										(travelTimeInformation?.duration.value * CHARGE_RATE * item.multiplier) / 100
-									)} */}
-								</Text>
+								<Text style={styles.itemPrice}>PYG {calculatePrice(item.multiplier)}</Text>
 							</View>
 						</Pressable>
 					);
