@@ -80,7 +80,7 @@ const RideOptions = () => {
 
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Elige un viaje - {travelTimeInformation?.distance.text}</Text>
+			<Text style={styles.title}>Elige un viaje - {travelTimeInformation?.distance?.text}</Text>
 			<FlatList
 				style={{ flex: 3 }}
 				data={rideOptionsData}

@@ -14,16 +14,16 @@ const Map = () => {
 
 	// Resize to fit both markers
 	useEffect(() => {
-		if (!origin || !destination) return;
+		if (!origin && !destination) return;
 
 		mapRef.current?.fitToSuppliedMarkers(['origin-marker', 'destination-marker'], {
-			edgePadding: { top: 20, right: 20, bottom: 20, left: 20 },
+			edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
 		});
 	}, [origin, destination]);
 
 	//Calculate travel time
 	useEffect(() => {
-		if (!origin || !destination) return;
+		if (!origin && !destination) return;
 		const mapDestination = nav.destination?.name;
 		const mapOrigin = nav.origin?.name;
 
@@ -49,15 +49,21 @@ const Map = () => {
 			style={{ flex: 1 }}
 			provider={PROVIDER_GOOGLE}
 			mapType='mutedStandard'
-			// minZoomLevel={13}
-			loadingEnabled
-			loadingIndicatorColor='#000'
-			region={{
-				latitude: origin!.lat,
-				longitude: origin!.lng,
+			maxZoomLevel={18}
+			// loadingEnabled
+			// loadingIndicatorColor='#000'
+			initialRegion={{
+				latitude: 43.660192,
+				longitude: -79.42525,
 				latitudeDelta: 0.005,
 				longitudeDelta: 0.005,
 			}}
+			// region={{
+			// 	latitude: origin!.lat,
+			// 	longitude: origin!.lng,
+			// 	latitudeDelta: 0.005,
+			// 	longitudeDelta: 0.005,
+			// }}
 		>
 			{/* Directions line */}
 			{origin && destination && (
