@@ -1,67 +1,128 @@
-import { StyleSheet, Text, View, FlatList, Pressable } from 'react-native';
-import React, { useEffect } from 'react';
+import {
+	StyleSheet,
+	Text,
+	View,
+	FlatList,
+	Pressable,
+	TouchableOpacity,
+	Image,
+	ImageSourcePropType,
+} from 'react-native';
+import React, { useEffect, useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import { useAppDispatch } from '../store/hooks';
+import { useAppDispatch, useAppSelector } from '../store/hooks';
 import { setDestination } from '../store/reducer/navReducer';
+import { Icon } from '@rneui/themed';
 
-const rideOptionsData = [
+type rideOptionsType = {
+	image: ImageSourcePropType;
+	title: string;
+	price: string;
+	seats: number | null;
+	subtitle?: string;
+	multiplier: number;
+};
+
+const rideOptionsData: rideOptionsType[] = [
 	{
-		image: null,
+		image: require('../assets/viaje.png'),
 		title: 'UberX',
 		price: '36.400',
 		seats: 4,
-		eta: '3.14 pm',
+		multiplier: 1,
 	},
 	{
-		image: null,
+		image: require('../assets/comfort.png'),
 		title: 'Comfort',
 		price: '54.200',
 		seats: 4,
-		eta: '3.14 pm',
+		multiplier: 1.5,
 	},
 	{
-		image: null,
+		image: require('../assets/moto.jpg'),
 		title: 'Moto',
 		price: '20.600',
 		seats: 1,
-		eta: '3.14 pm',
+		multiplier: 0.7,
 	},
 	{
-		image: null,
+		image: require('../assets/envios.png'),
 		title: 'Flash',
 		price: '32.400',
-		seats: '3.14 pm',
-		eta: 'Hacé llegar o recibí artículos',
+		seats: null,
+		multiplier: 1,
+		subtitle: 'Hacé llegar o recibí artículos',
 	},
 ];
+
+const CHARGE_RATE = 1;
 
 const RideOptions = () => {
 	const navigation = useNavigation();
 	const dispatch = useAppDispatch();
+	const travelTimeInformation = useAppSelector((state) => state.nav.travelTimeInformation);
 
+	//Remove destination coordinates when exiting screen
 	useEffect(() => {
 		navigation.addListener('beforeRemove', (e) => {
 			dispatch(setDestination(null));
 		});
 	}, []);
 
+	const [selectedItem, setSelectedItem] = useState('UberX');
+
 	return (
 		<View style={styles.container}>
-			<Text style={styles.title}>Elige un viaje</Text>
+			<Text style={styles.title}>Elige un viaje - {travelTimeInformation?.distance.text}</Text>
 			<FlatList
+				style={{ flex: 3 }}
 				data={rideOptionsData}
-				renderItem={(items) => (
-					<Pressable style={styles.itemContainer} android_ripple={styles.ripple}>
-						<View style={styles.topRow}>
-							<Text style={styles.itemTitle}>{items.item.title}</Text>
-							<Text style={styles.itemSeats}>{items.item.seats}</Text>
-							<Text style={styles.itemPrice}>PYG {items.item.price}</Text>
-						</View>
+				extraData={selectedItem}
+				renderItem={({ item }) => {
+					const backgroundColor = item.title === selectedItem ? '#ececec' : '#fff';
 
-						<Text>{items.item.eta}</Text>
-					</Pressable>
-				)}
+					return (
+						<Pressable
+							style={[styles.itemContainer, { backgroundColor: backgroundColor }]}
+							android_ripple={styles.ripple}
+							onPress={() => setSelectedItem(item.title)}
+						>
+							<Image source={item.image} style={styles.image} />
+							<View style={styles.content}>
+								<View>
+									<Text style={styles.itemTitle}>{item.title}</Text>
+									{item.subtitle ? (
+										<Text>{item.subtitle}</Text>
+									) : (
+										<Text>Llegada en: {travelTimeInformation?.duration.text}</Text>
+									)}
+								</View>
+
+								{item.seats && (
+									<View style={styles.itemSeats}>
+										<Icon name='person' type='material' size={15} />
+										<Text>{item.seats}</Text>
+									</View>
+								)}
+
+								<Text style={styles.itemPrice}>
+									{/* {new Intl.NumberFormat('en-US', {
+										style: 'currency',
+										currency: 'PYG',
+									}).format(
+										(travelTimeInformation?.duration.value * CHARGE_RATE * item.multiplier) / 100
+									)} */}
+								</Text>
+							</View>
+						</Pressable>
+					);
+				}}
 			/>
+			<TouchableOpacity activeOpacity={0.8} style={styles.confirmContainer}>
+				<View style={styles.confirmBtn}>
+					<Text style={styles.confirmBtnText}>PEDIR {selectedItem}</Text>
+				</View>
+			</TouchableOpacity>
 		</View>
 	);
 };
@@ -82,12 +143,22 @@ const styles = StyleSheet.create({
 		textAlign: 'center',
 		fontSize: 18,
 		fontWeight: '600',
+		borderBottomColor: '#ececec',
+		borderBottomWidth: 1,
 	},
-	topRow: {
+	image: {
+		width: 70,
+		height: 70,
+		marginRight: 20,
+	},
+	content: {
+		flex: 1,
 		flexDirection: 'row',
-		alignItems: 'center',
+		alignItems: 'baseline',
+		alignSelf: 'center',
 	},
 	itemContainer: {
+		flexDirection: 'row',
 		paddingHorizontal: 20,
 		paddingVertical: 15,
 	},
@@ -96,9 +167,27 @@ const styles = StyleSheet.create({
 	},
 	itemSeats: {
 		marginLeft: 5,
+		flexDirection: 'row',
+		justifyContent: 'center',
 	},
 	itemPrice: {
 		fontSize: 20,
 		marginLeft: 'auto',
+	},
+	confirmContainer: {
+		borderTopWidth: 0.8,
+		borderColor: '#ececec',
+		paddingVertical: 20,
+		paddingHorizontal: 20,
+	},
+	confirmBtn: {
+		backgroundColor: '#000',
+		paddingVertical: 15,
+	},
+	confirmBtnText: {
+		color: '#fff',
+		fontSize: 18,
+		fontWeight: '600',
+		textAlign: 'center',
 	},
 });

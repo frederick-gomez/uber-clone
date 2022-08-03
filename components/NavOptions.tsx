@@ -25,7 +25,7 @@ const NavOptions = () => {
 				}}
 			>
 				<Text style={styles.text}>Viajes</Text>
-				<Image style={styles.image} source={require('../assets/viaje.webp')} />
+				<Image style={styles.image} source={require('../assets/viaje.png')} />
 			</Pressable>
 
 			<Pressable

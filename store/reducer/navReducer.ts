@@ -11,7 +11,19 @@ type locationType = {
 interface navState {
 	origin: locationType;
 	destination: locationType;
-	travelTimeInformation: number | null;
+	travelTimeInformation:
+		| {
+				distance: {
+					text: string;
+					value: number;
+				};
+				duration: {
+					text: string;
+					value: number;
+				};
+				status: string;
+		  }
+		| any;
 }
 
 const initialState: navState = {
