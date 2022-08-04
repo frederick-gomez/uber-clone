@@ -1,5 +1,8 @@
-import React from 'react';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import React, { useRef, useEffect } from 'react';
+import {
+	GooglePlacesAutocomplete,
+	GooglePlacesAutocompleteRef,
+} from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAPS_KEY } from '@env';
 import { useAppDispatch } from '../store/hooks';
 import { setDestination } from '../store/reducer/navReducer';
@@ -12,9 +15,16 @@ type rideScreenType = NativeStackNavigationProp<CardStackParamList, 'RideOptions
 const SearchDestination = () => {
 	const dispatch = useAppDispatch();
 	const navigation = useNavigation<rideScreenType>();
+	const searchBarRef = useRef<GooglePlacesAutocompleteRef>(null);
+
+	useEffect(() => {
+		const listener = navigation.addListener('blur', () => searchBarRef.current?.clear());
+		return listener;
+	}, [navigation]);
 
 	return (
 		<GooglePlacesAutocomplete
+			ref={searchBarRef}
 			styles={{
 				container: {
 					flex: 0,
@@ -52,6 +62,7 @@ const SearchDestination = () => {
 			query={{
 				key: GOOGLE_MAPS_KEY,
 				language: 'es',
+				components: 'country:py',
 			}}
 		/>
 	);

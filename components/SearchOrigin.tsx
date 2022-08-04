@@ -1,14 +1,26 @@
-import React from 'react';
-import { GooglePlacesAutocomplete } from 'react-native-google-places-autocomplete';
+import React, { useEffect, useRef } from 'react';
+import {
+	GooglePlacesAutocomplete,
+	GooglePlacesAutocompleteRef,
+} from 'react-native-google-places-autocomplete';
 import { GOOGLE_MAPS_KEY } from '@env';
 import { useAppDispatch } from '../store/hooks';
 import { setOrigin, setDestination } from '../store/reducer/navReducer';
+import { useNavigation } from '@react-navigation/native';
 
 const SearchOrigin = () => {
 	const dispatch = useAppDispatch();
+	const navigation = useNavigation();
+	const searchBarRef = useRef<GooglePlacesAutocompleteRef>(null);
+
+	useEffect(() => {
+		const listener = navigation.addListener('blur', () => searchBarRef.current?.clear());
+		return listener;
+	}, [navigation]);
 
 	return (
 		<GooglePlacesAutocomplete
+			ref={searchBarRef}
 			styles={{
 				container: {
 					flex: 0,
@@ -45,6 +57,7 @@ const SearchOrigin = () => {
 			query={{
 				key: GOOGLE_MAPS_KEY,
 				language: 'es',
+				components: 'country:py',
 			}}
 		/>
 	);
