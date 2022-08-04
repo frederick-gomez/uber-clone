@@ -1,4 +1,4 @@
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Image, Pressable, StyleSheet, Text, View, Alert } from 'react-native';
 import React from 'react';
 import { useNavigation } from '@react-navigation/native';
 import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -20,6 +20,16 @@ const NavOptions = () => {
 					android_ripple={styles.ripple}
 					onPress={() => {
 						if (!origin) {
+							Alert.alert(
+								'',
+								'Primero ingresa tu punto de partida',
+								[
+									{
+										text: 'OK',
+									},
+								],
+								{ cancelable: true }
+							);
 							return;
 						}
 						navigation.navigate('MapScreen');
