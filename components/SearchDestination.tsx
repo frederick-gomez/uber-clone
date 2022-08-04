@@ -19,9 +19,12 @@ const SearchDestination = () => {
 				container: {
 					flex: 0,
 					marginVertical: 10,
+					borderRadius: 25,
 					backgroundColor: '#ececec',
+					marginHorizontal: 20,
 				},
 				textInput: {
+					borderRadius: 25,
 					backgroundColor: '#ececec',
 					height: 50,
 					paddingLeft: 20,

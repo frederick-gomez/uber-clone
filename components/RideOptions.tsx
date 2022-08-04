@@ -64,16 +64,15 @@ const RideOptions = () => {
 
 	//Calculate price according to travel distance and multipliers of each ride
 	const calculatePrice = (multiplier: number): string => {
-		const price = (travelTimeInformation?.duration.value * CHARGE_RATE * multiplier) / 100;
+		const price = (travelTimeInformation?.duration?.value * CHARGE_RATE * multiplier) / 100;
 		const roundedPrice = Math.round(price).toFixed(3);
 		return roundedPrice;
 	};
 
 	//Remove destination coordinates when exiting screen
 	useEffect(() => {
-		navigation.addListener('beforeRemove', (e) => {
-			dispatch(setDestination(null));
-		});
+		navigation.addListener('beforeRemove', () => dispatch(setDestination(null)));
+		return navigation.removeListener('beforeRemove', () => dispatch(setDestination(null)));
 	}, []);
 
 	const [selectedItem, setSelectedItem] = useState('UberX');
@@ -110,11 +109,16 @@ const RideOptions = () => {
 									{item.subtitle ? (
 										<Text>{item.subtitle}</Text>
 									) : (
-										<Text>Llegada en: {travelTimeInformation?.duration.text}</Text>
+										<Text>Llegada en: {travelTimeInformation?.duration?.text}</Text>
 									)}
 								</View>
 
-								<Text style={styles.itemPrice}>PYG {calculatePrice(item.multiplier)}</Text>
+								<Text style={styles.itemPrice}>
+									PYG{' '}
+									{travelTimeInformation?.duration?.value
+										? calculatePrice(item.multiplier)
+										: 'Calculando'}
+								</Text>
 							</View>
 						</Pressable>
 					);

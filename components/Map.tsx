@@ -15,15 +15,24 @@ const Map = () => {
 	// Resize to fit both markers
 	useEffect(() => {
 		if (!origin && !destination) return;
+		const originMarker = 'origin-marker';
+		const destinationMarker = 'destination-marker';
 
-		mapRef.current?.fitToSuppliedMarkers(['origin-marker', 'destination-marker'], {
-			edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
-		});
+		const timerId = setTimeout(
+			() => (
+				mapRef.current!.fitToSuppliedMarkers([originMarker, destinationMarker], {
+					edgePadding: { top: 50, right: 50, bottom: 50, left: 50 },
+				}),
+				100
+			)
+		);
+
+		return () => clearTimeout(timerId);
 	}, [origin, destination]);
 
 	//Calculate travel time
 	useEffect(() => {
-		if (!origin && !destination) return;
+		if (!origin || !destination) return;
 		const mapDestination = nav.destination?.name;
 		const mapOrigin = nav.origin?.name;
 
@@ -50,20 +59,14 @@ const Map = () => {
 			provider={PROVIDER_GOOGLE}
 			mapType='mutedStandard'
 			maxZoomLevel={18}
-			// loadingEnabled
-			// loadingIndicatorColor='#000'
-			initialRegion={{
-				latitude: 43.660192,
-				longitude: -79.42525,
+			minZoomLevel={12}
+			loadingEnabled
+			region={{
+				latitude: origin!.lat,
+				longitude: origin!.lng,
 				latitudeDelta: 0.005,
 				longitudeDelta: 0.005,
 			}}
-			// region={{
-			// 	latitude: origin!.lat,
-			// 	longitude: origin!.lng,
-			// 	latitudeDelta: 0.005,
-			// 	longitudeDelta: 0.005,
-			// }}
 		>
 			{/* Directions line */}
 			{origin && destination && (
@@ -80,7 +83,7 @@ const Map = () => {
 			{origin && (
 				<Marker
 					coordinate={{ latitude: origin.lat, longitude: origin.lng }}
-					title={nav.origin?.name}
+					title='Punto de partida'
 					identifier='origin-marker'
 				/>
 			)}
