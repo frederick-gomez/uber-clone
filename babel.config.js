@@ -13,6 +13,12 @@ module.exports = function (api) {
 					allowUndefined: true,
 				},
 			],
+			[
+				'inline-dotenv',
+				{
+					path: 'path/to/.env',
+				},
+			],
 		],
 	};
 };

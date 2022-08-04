@@ -14,28 +14,32 @@ const NavOptions = () => {
 
 	return (
 		<View style={styles.container}>
-			<Pressable
-				style={styles.item}
-				android_ripple={styles.ripple}
-				onPress={() => {
-					if (!origin) {
-						return;
-					}
-					navigation.navigate('MapScreen');
-				}}
-			>
-				<Text style={styles.text}>Viajes</Text>
-				<Image style={styles.image} source={require('../assets/viaje.png')} />
-			</Pressable>
+			<View style={styles.itemContainer}>
+				<Pressable
+					style={styles.item}
+					android_ripple={styles.ripple}
+					onPress={() => {
+						if (!origin) {
+							return;
+						}
+						navigation.navigate('MapScreen');
+					}}
+				>
+					<Text style={styles.text}>Viaje</Text>
+					<Image style={styles.image} source={require('../assets/viaje.png')} />
+				</Pressable>
+			</View>
 
-			<Pressable
-				style={styles.item}
-				android_ripple={styles.ripple}
-				onPress={() => navigation.navigate('FlashScreen')}
-			>
-				<Text style={styles.text}>Envios</Text>
-				<Image style={styles.image} source={require('../assets/envios.png')} />
-			</Pressable>
+			<View style={styles.itemContainer}>
+				<Pressable
+					style={styles.item}
+					android_ripple={styles.ripple}
+					onPress={() => navigation.navigate('FlashScreen')}
+				>
+					<Text style={styles.text}>Envios</Text>
+					<Image style={styles.image} source={require('../assets/envios.png')} />
+				</Pressable>
+			</View>
 		</View>
 	);
 };
@@ -45,16 +49,20 @@ const styles = StyleSheet.create({
 		justifyContent: 'space-between',
 		flexDirection: 'row',
 	},
+	itemContainer: {
+		overflow: 'hidden',
+		borderRadius: 15,
+		flex: 1,
+		maxWidth: 170,
+	},
 	item: {
-		width: 170,
 		justifyContent: 'space-between',
 		alignItems: 'flex-end',
 		flexDirection: 'row',
 		backgroundColor: '#ececec',
-		borderRadius: 15,
 	},
 	text: {
-		padding: 10,
+		padding: 15,
 		fontWeight: '700',
 	},
 	image: {

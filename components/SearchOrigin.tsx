@@ -7,10 +7,12 @@ import { GOOGLE_MAPS_KEY } from '@env';
 import { useAppDispatch } from '../store/hooks';
 import { setOrigin, setDestination } from '../store/reducer/navReducer';
 import { useNavigation } from '@react-navigation/native';
+import type { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { RootStackParamList } from '../types/RootStackParamList';
 
 const SearchOrigin = () => {
 	const dispatch = useAppDispatch();
-	const navigation = useNavigation();
+	const navigation = useNavigation<NativeStackNavigationProp<RootStackParamList>>();
 	const searchBarRef = useRef<GooglePlacesAutocompleteRef>(null);
 
 	useEffect(() => {
@@ -52,6 +54,7 @@ const SearchOrigin = () => {
 					})
 				);
 				dispatch(setDestination(null));
+				navigation.navigate('MapScreen');
 			}}
 			fetchDetails
 			query={{
